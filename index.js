@@ -3,6 +3,10 @@ const express = require('express');
 //store express function in app constant
 const app = express();
 const port = 8000;
+const path = require('path');
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 //This will create a middleware which route our request from the entry page to further pages
 app.use('/', require('./routes/index'));
