@@ -8,9 +8,6 @@ router.get('/signup', userController.signup);
 
 router.post('/create-user', userController.createUser);
 
-router.post('/create-session', passport.authenticate(
-    'local',
-    {failureRedirect: '/users/login'}
-),userController.createSession);
+router.post('/create-session', passport.authenticate('local'),userController.createSession);
 
 module.exports = router;
