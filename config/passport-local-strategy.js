@@ -52,4 +52,26 @@ passport.deserializeUser(function(id,done){
     });
 });
 
+passport.checkAuthentication = function(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    return res.redirect('/users/login');
+}
+
+passport.setAuthenticatedUser = function(req, res, next){
+    if(req.isAuthenticated()){
+        res.locals.user = req.user;
+    }
+    return next();
+}
+
+//middleware for checking if the user logged in or not which is to be used for login and signup screen
+passport.checkForLogin = function(req, res, next){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    return next();
+}
+
 module.exports = passport;

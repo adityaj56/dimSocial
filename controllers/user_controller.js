@@ -1,12 +1,18 @@
 const User = require('../models/user')
 
 module.exports.login = function(req, res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/feed');
+    }
     return res.render('login',{
         title: "login"
     });
 }
 
 module.exports.signup = function(req, res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/feed');
+    }
     return res.render('signup',{
         title: 'sign-up'
     });
@@ -28,12 +34,34 @@ module.exports.createUser = function(req, res){
                     console.log('Error while creating the user: ', err);
                     return;
                 }
-                return res.redirect('/users/login')
+                return res.redirect('/users/login');
             })
         }
     })
 }
 
 module.exports.createSession = function(req, res){
-    return res.redirect('/');
+    return res.redirect('/users/feed');
+}
+
+module.exports.profile = function(req, res){
+    return res.render('profile',{
+        title: 'profile'
+    });
+}
+
+module.exports.feed = function(req, res){
+    return res.render('feed',{
+        title: "User's feed"
+    })
+}
+
+module.exports.logout = function(req, res){
+    req.logout(function(err){
+        if(err){
+            console.log("Error logging out the session: ", err);
+            return res.redirect('/users/feed');
+        }
+    });
+    return res.redirect('/users/login');
 }
