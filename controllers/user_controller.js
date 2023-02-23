@@ -1,4 +1,5 @@
-const User = require('../models/user')
+const User = require('../models/user');
+const Post = require('../models/post');
 
 module.exports.login = function(req, res){
     if(req.isAuthenticated()){
@@ -51,9 +52,48 @@ module.exports.profile = function(req, res){
 }
 
 module.exports.feed = function(req, res){
-    return res.render('feed',{
-        title: "User's feed"
-    })
+    // return res.render('feed',{
+    //     title: "User's feed"
+    // })
+    // Post.find({}, function(err, postList){
+    //     if(err){
+    //         console.log('Error in finding Post for the user');
+    //         return;
+    //     }
+    //     return res.render('feed', {
+    //         title: "User's feed",
+    //         post_list: postList
+    //     });
+    // });
+    
+    Post.find({})
+    .populate('user')
+    .populate({
+        path: 'comments',
+        populate: {
+            path: 'user'
+        }
+    }).exec(function(err, postList){
+        if(err){
+            console.log('Error in finding Post for the user');
+            return;
+        }
+        return res.render('feed', {
+            title: "User's feed",
+            post_list: postList
+        });
+    });
+
+    // Post.find({}).populate('user').exec(function(err, postList){
+    //     if(err){
+    //         console.log('Error in finding Post for the user');
+    //         return;
+    //     }
+    //     return res.render('feed', {
+    //         title: "User's feed",
+    //         post_list: postList
+    //     });
+    // });
 }
 
 module.exports.logout = function(req, res){
