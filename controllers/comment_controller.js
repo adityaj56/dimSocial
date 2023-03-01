@@ -25,3 +25,19 @@ module.exports.create = function(req, res){
         }
     })
 }
+
+module.exports.delete = function(req, res){
+    Comment.findById(req.query.id, function(err, reqComment){
+        if(err){
+            console.log('Error in finding comment in database: ', err);
+            return res.redirect('back');
+        }
+        if(reqComment && reqComment.user == req.user.id){
+            let postId = reqComment.post;
+            reqComment.remove();
+            Post.findByIdAndUpdate(postId, {$pull: {comments: req.query.id}}, function(err, post){
+            })
+        }
+        return res.redirect('back');
+    });
+}

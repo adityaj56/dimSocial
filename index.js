@@ -14,13 +14,15 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
 
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
-app.use(express.static(path.join(__dirname,'assets')));
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname,'assets')));
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
@@ -41,9 +43,13 @@ app.use(session({
     })
 }));
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
+
+app.use(flash());
+app.use(customMware.setFlash);
 
 //This will create a middleware which route our request from the entry page to further pages
 
