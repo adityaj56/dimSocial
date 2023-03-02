@@ -13,7 +13,7 @@ module.exports.create = async function(req, res){
                     Post: post
                 },
                 message: 'Post created!'
-            })
+            });
         }
     }catch(err){
         req.flash('error', err);
@@ -37,9 +37,8 @@ module.exports.delete = async function(req, res){
                         postId : req.query.id
                     },
                     message: 'Post deleted!'
-                })
+                });
             }
-            res.redirect('back');
         }
 
     }catch(err){

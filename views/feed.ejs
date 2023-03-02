@@ -16,16 +16,16 @@
             <p> <%= post.content %></p>
             <p> <%= post.user.name %></p>
            <div class="comment-section">
-                <form action="/comment/create" method="POST">
+                <form class="create-comment-form" action="/comment/create" method="POST">
                     <input type="text" name="content" placeholder="comment here" required>
                     <input type="hidden" name="postId" value="<%= post._id %>">
                     <input type="submit" value="comment">
                 </form>
-                <ul>
+                <ul id="comment-list-<%= post._id %>">
                     <% for(let comment of post.comments) { %> 
-                        <li>
+                        <li id="comment-<%= comment._id %>">
                             <% if(user && user.id == comment.user._id){ %> 
-                                <small><a href="/comment/delete/?id=<%= comment._id %>">X</a></small>
+                                <small><a class="delete-comment" href="/comment/delete/?id=<%= comment._id %>">X</a></small>
                             <%}%>
                             <p> <%= comment.content %></p>
                          </li>
